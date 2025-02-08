@@ -9,12 +9,31 @@
 <body>
     <h1>{{ post.title }}</h1>
     <p>{{ post.content }}</p>
+
+    {% if post.audio %}
+        <h2>Audio:</h2>
+        <audio controls>
+            <source src="{{ url_for('static', filename=post.audio.split('static/')[-1]) }}" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    {% endif %}
+
+
     <h2>Comments</h2>
     <ul>
         {% for comment in comments %}
-        <li><strong>{{ comment.author }}:</strong> {{ comment.comment }}</li>
+        <li>
+            <strong>{{ comment.author }}:</strong>
+            {% if comment.audio %}
+                <audio controls>
+                    <source src="{{ comment.audio }}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            {% endif %}
+        </li>
         {% endfor %}
     </ul>
+
     <a href="{{ url_for('home') }}">Back to Home</a>
 </body>
 </html>

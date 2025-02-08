@@ -18,12 +18,24 @@ comments = {
     2: [{"author": "Charlie", "audio": "static/uploads/comment2.mp3"}],
 }
 
+# def save_audio_file(audio_file):
+#     filename = secure_filename(audio_file.filename)
+#     timestamp = str(int(time.time()))
+#     filepath = os.path.join(app.config['UPLOAD_FOLDER'], f"{timestamp}_{filename}")
+#     audio_file.save(filepath)
+#     return filepath
+
 def save_audio_file(audio_file):
     filename = secure_filename(audio_file.filename)
     timestamp = str(int(time.time()))
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], f"{timestamp}_{filename}")
+
     audio_file.save(filepath)
+
+    print("Saved audio file:", filepath)  
+
     return filepath
+
 
 @app.route('/')
 def home():
