@@ -27,10 +27,11 @@
                         <input type="file" name="audio" id="audio" accept="audio/*" hidden>
                         <label for="audio" id="customFileButton">Upload Audio</label>
                         <button type="button" id="recordButton">🎤 Record</button>
-                    </div>
-                    <div class="file-status">
-                        <p id="fileName"></p>
-                    </div>
+                        <div class="file-status">
+                            <p id="fileName"></p>  <!-- Display the file name here -->
+                            <audio id="audioPreview" controls style="display: none;"></audio>  <!-- Audio Preview -->
+                        </div>
+
                 </div>
                 
 

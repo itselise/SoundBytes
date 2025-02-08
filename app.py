@@ -62,21 +62,24 @@ def create_post():
     if request.method == 'POST':
         title = request.form['title']
         content = request.form['content']
+        
+        # Get the uploaded file
         audio_file = request.files.get('audio')
-        recorded_audio = request.form.get('recorded_audio')
-
+        
         audio_path = None
 
-        # Save uploaded file
         if audio_file and audio_file.filename:
+            # Save uploaded file
             audio_path = save_audio_file(audio_file)
-
-        # Save recorded audio (if present)
-        elif recorded_audio:
+        
+        # Handle recorded audio (if it's present as Base64 string)
+        recorded_audio = request.form.get('recorded_audio')
+        if recorded_audio:
+            # Decode the Base64 string and save the file
             filename = f"recording_{int(time.time())}.wav"
             audio_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             
-            # Decode and save Base64 file
+            # Decode and save the Base64 file
             with open(audio_path, "wb") as f:
                 f.write(base64.b64decode(recorded_audio.split(",")[1]))
 
@@ -87,6 +90,7 @@ def create_post():
         return redirect(url_for('home'))
 
     return render_template('create_post.html')
+
 
 
 @app.route('/post/<int:post_id>/comment', methods=['POST'])
