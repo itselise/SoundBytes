@@ -1,12 +1,38 @@
-<form method="POST" enctype="multipart/form-data">
-    <label for="title">Title:</label>
-    <input type="text" name="title" id="title" required><br><br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Post</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Create a New Post</h2>
+        <form method="POST" enctype="multipart/form-data">
+            <label for="title">Title:</label>
+            <input type="text" name="title" id="title" required><br><br>
 
-    <label for="content">Content:</label><br>
-    <textarea name="content" id="content" rows="4" cols="50" required></textarea><br><br>
+            <label for="content">Content:</label><br>
+            <textarea name="content" id="content" rows="4" cols="50" required></textarea><br><br>
 
-    <label for="audio">Upload Audio:</label>
-    <input type="file" name="audio" id="audio" accept="audio/*" required><br><br>
+            <label for="audio">Upload Audio:</label>
+            <input type="file" name="audio" id="audio" accept="audio/*"><br><br>
 
-    <button type="submit">Create Post</button>
-</form>
+            <!-- Record Button -->
+            <button type="button" id="recordButton">🎤 Record Audio</button>
+            <p id="status">Click to start recording...</p>
+            <audio id="audioPreview" controls style="display: none;"></audio>
+
+            <!-- Hidden Input to Store Recorded Audio -->
+            <input type="hidden" name="recorded_audio" id="recordedAudioInput">
+
+            <br><br>
+            <button type="submit">Create Post</button>
+        </form>
+    </div>
+
+    <!-- Link to External JavaScript -->
+    <script src="{{ url_for('static', filename='js/record.js') }}"></script>
+</body>
+</html>

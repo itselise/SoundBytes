@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import os
 import time
 from werkzeug.utils import secure_filename
+import base64
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
@@ -60,13 +61,33 @@ def post(post_id):
 def create_post():
     if request.method == 'POST':
         title = request.form['title']
-        audio_file = request.files['audio']
-        if audio_file:
+        content = request.form['content']
+        audio_file = request.files.get('audio')
+        recorded_audio = request.form.get('recorded_audio')
+
+        audio_path = None
+
+        # Save uploaded file
+        if audio_file and audio_file.filename:
             audio_path = save_audio_file(audio_file)
-            new_post = {"id": len(posts) + 1, "title": title, "audio": audio_path}
-            posts.append(new_post)
-            return redirect(url_for('home'))
+
+        # Save recorded audio (if present)
+        elif recorded_audio:
+            filename = f"recording_{int(time.time())}.wav"
+            audio_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            
+            # Decode and save Base64 file
+            with open(audio_path, "wb") as f:
+                f.write(base64.b64decode(recorded_audio.split(",")[1]))
+
+        # Add new post to the list
+        new_post = {"id": len(posts) + 1, "title": title, "content": content, "audio": audio_path}
+        posts.append(new_post)
+
+        return redirect(url_for('home'))
+
     return render_template('create_post.html')
+
 
 @app.route('/post/<int:post_id>/comment', methods=['POST'])
 def add_comment(post_id):

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Record Audio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Record Your Audio</h2>
+        <button id="recordButton">🎤 Start Recording</button>
+        <p id="status">Click to start recording...</p>
+        <audio id="audioPreview" controls style="display: none;"></audio>
+    </div>
+
+    <!-- Link to External JavaScript -->
+    <script src="{{ url_for('static', filename='js/record.js') }}"></script>
+</body>
+</html>
