@@ -25,14 +25,23 @@ comments = {
 #     audio_file.save(filepath)
 #     return filepath
 
+ALLOWED_EXTENSIONS = {'mp3', 'wav', 'ogg'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 def save_audio_file(audio_file):
     filename = secure_filename(audio_file.filename)
     timestamp = str(int(time.time()))
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], f"{timestamp}_{filename}")
-
+    
     audio_file.save(filepath)
-
-    print("Saved audio file:", filepath)  
+    
+    # Debugging: Check if the file was saved successfully
+    if os.path.getsize(filepath) > 0:
+        print(f"Audio file {filename} saved successfully!")
+    else:
+        print(f"Audio file {filename} is empty or not saved correctly!")
 
     return filepath
 
