@@ -51,10 +51,21 @@ def save_audio_file(audio_file):
 def home():
     return render_template('home.html', posts=posts)
 
-@app.route('/post/<int:post_id>')
+@app.route('/post/<int:post_id>', methods=['GET', 'POST'])
 def post(post_id):
     post = next((p for p in posts if p['id'] == post_id), None)
     post_comments = comments.get(post_id, [])
+
+    if request.method == 'POST':
+        author = request.form['author']
+        audio_file = request.files.get('audio')
+
+        if audio_file and audio_file.filename:
+            audio_path = save_audio_file(audio_file)
+            comments.setdefault(post_id, []).append({"author": author, "audio": audio_path})
+
+        return redirect(url_for('post', post_id=post_id))
+
     return render_template('post.html', post=post, comments=post_comments)
 
 @app.route('/create', methods=['GET', 'POST'])

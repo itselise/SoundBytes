@@ -26,13 +26,28 @@
             <strong>{{ comment.author }}:</strong>
             {% if comment.audio %}
                 <audio controls>
-                    <source src="{{ comment.audio }}" type="audio/mpeg">
+                    <source src="{{ url_for('static', filename=comment.audio.split('static/')[-1]) }}" type="audio/mpeg">
                     Your browser does not support the audio element.
                 </audio>
             {% endif %}
         </li>
         {% endfor %}
     </ul>
+
+    <h3>Add a Comment</h3>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="input-group">
+            <label for="author">Your Name:</label>
+            <input type="text" name="author" id="author" required>
+        </div>
+
+        <div class="input-group">
+            <label for="audio">Upload Audio:</label>
+            <input type="file" name="audio" id="audio" accept="audio/*">
+        </div>
+
+        <button type="submit">Submit Comment</button>
+    </form>
 
     <a href="{{ url_for('home') }}">Back to Home</a>
 </body>
