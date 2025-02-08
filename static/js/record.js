@@ -21,21 +21,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 mediaRecorder.onstop = async () => {
                     const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
                     audioChunks = [];
-
+                
                     // Convert to Base64 and store in hidden input
                     const reader = new FileReader();
                     reader.readAsDataURL(audioBlob);
                     reader.onloadend = function () {
                         audioInput.value = reader.result;
                     };
-
+                
                     // Show audio preview
                     const audioURL = URL.createObjectURL(audioBlob);
                     audioPreview.src = audioURL;
                     audioPreview.style.display = "block";
                     statusText.innerText = "Recording saved!";
+                
+                    // ✅ Display the recorded file name dynamically
+                    const fileNameDisplay = document.getElementById("fileName");
+                    fileNameDisplay.textContent = "Recorded_Audio.wav"; // Custom file name
                 };
-
+                
                 mediaRecorder.start();
                 recordButton.innerText = "⏹ Stop Recording";
                 statusText.innerText = "Recording...";
@@ -47,4 +51,18 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const fileInput = document.getElementById("audio");
+    const fileNameDisplay = document.getElementById("fileName");
+
+    fileInput.addEventListener("change", function () {
+        if (fileInput.files.length > 0) {
+            fileNameDisplay.textContent = fileInput.files[0].name; // Show actual file name
+        } else {
+            fileNameDisplay.textContent = "XXX"; // Show placeholder if no file is chosen
+        }
+    });
 });

@@ -17,21 +17,22 @@
                 </div>
 
                 <div class="input-group">
-                    <label for="content">Content:</label>
+                    <label for="content">Description:</label>
                     <textarea name="content" id="content" rows="4" required></textarea>
                 </div>
 
+                <!-- Stack Upload and Record Buttons Vertically -->
                 <div class="input-group">
-                    <label for="audio">Upload Audio:</label>
-                    <input type="file" name="audio" id="audio" accept="audio/*">
+                    <div class="audio-buttons">
+                        <input type="file" name="audio" id="audio" accept="audio/*" hidden>
+                        <label for="audio" id="customFileButton">Upload Audio</label>
+                        <button type="button" id="recordButton">🎤 Record</button>
+                    </div>
+                    <div class="file-status">
+                        <p id="fileName"></p>
+                    </div>
                 </div>
-
-                <div class="input-group">
-                    <button type="button" id="recordButton">🎤 Record Audio</button>
-                    <p id="status">Click to start recording...</p>
-                    <audio id="audioPreview" controls style="display: none;"></audio>
-                    <input type="hidden" name="recorded_audio" id="recordedAudioInput">
-                </div>
+                
 
                 <button type="submit" class="submit-btn">Create Post</button>
             </form>

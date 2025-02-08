@@ -9,28 +9,20 @@ body {
     margin: 0;
 }
 
-/* Card-style container */
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
+/* Centered card container */
 .card {
     background: white;
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     width: 400px;
-    text-align: center;
 }
 
-/* Input and form styling */
+/* Left-align labels and keep inputs full width */
 .input-group {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: flex-start; /* Ensures labels and inputs are left-aligned */
     width: 100%;
     margin-bottom: 12px;
 }
@@ -40,48 +32,96 @@ body {
     margin-bottom: 5px;
 }
 
+/* Ensure text fields take full width */
 input[type="text"], textarea, input[type="file"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 8px;
     font-size: 14px;
+    box-sizing: border-box;
 }
 
-/* Buttons */
-button {
+/* Ensure Upload and Record buttons are equal-sized */
+.audio-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
     width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
 }
 
+/* Make both elements take up equal space */
+.audio-buttons input[type="file"],
+.audio-buttons button {
+    flex: 1;  /* Both elements get equal width */
+    max-width: 50%; /* Prevents one from growing more */
+}
+
+/* Ensure Record button aligns well */
 #recordButton {
-    background-color: #28a745;
+    background-color: #FFCBA5;
     color: white;
-    margin-top: 8px;
+    padding: 10px;
+    border: none;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
 }
 
 #recordButton:hover {
-    background-color: #218838;
+    background-color: #FFCBA5;
 }
 
+
+/* Style submit button */
 .submit-btn {
-    background-color: #007BFF;
+    background-color: #967BB6;
     color: white;
-    margin-top: 12px;
+    padding: 12px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    width: 100%;
+    cursor: pointer;
 }
 
 .submit-btn:hover {
+    background-color: #FF9899;
+}
+
+
+/* Style custom upload button */
+#customFileButton {
+    flex: 1;
+    background-color: #FF9899;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block;
+    text-align: center;
+    font-size: 14px;
+}
+
+#customFileButton:hover {
     background-color: #0056b3;
 }
 
-/* Status text */
-#status {
+/* New class to align file name properly */
+.file-status {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 5px;
+}
+
+/* Style file name text */
+#fileName {
     font-size: 14px;
     color: gray;
-    margin-top: 10px;
 }
+
