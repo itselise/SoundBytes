@@ -5,6 +5,8 @@ from werkzeug.utils import secure_filename
 import base64
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = 'audio'
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # Dummy users dictionary (replace with database in a real app)
 users = {
