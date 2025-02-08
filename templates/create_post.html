@@ -15,27 +15,29 @@
                     <label for="title">Title:</label>
                     <input type="text" name="title" id="title" required>
                 </div>
-
+                
                 <div class="input-group">
                     <label for="content">Description:</label>
                     <textarea name="content" id="content" rows="4" required></textarea>
                 </div>
-
+                
                 <!-- Stack Upload and Record Buttons Vertically -->
                 <div class="input-group">
                     <div class="audio-buttons">
                         <input type="file" name="audio" id="audio" accept="audio/*" hidden>
                         <label for="audio" id="customFileButton">Upload Audio</label>
                         <button type="button" id="recordButton">🎤 Record</button>
-                        <div class="file-status">
-                            <p id="fileName"></p>  <!-- Display the file name here -->
-                            <audio id="audioPreview" controls style="display: none;"></audio>  <!-- Audio Preview -->
-                        </div>
-
+                    </div>
+                    
+                    <!-- Move file name and audio player here below the buttons -->
+                    <div class="file-status">
+                        <p id="fileName"></p>
+                        <audio id="audioPreview" controls style="display: none;"></audio> <!-- Audio Preview -->
+                    </div>
                 </div>
                 
-
                 <button type="submit" class="submit-btn">Create Post</button>
+                
             </form>
         </div>
     </div>
