@@ -4,17 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Welcome to the Blog</h1>
-    <a href="{{ url_for('create_post') }}">Create a New Post</a>
-    <ul>
-        {% for post in posts %}
-        <li>
-            <a href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a>
-        </li>
-        {% endfor %}
-    </ul>
+    <div class="container">
+        <div class="header">
+            <h2>Hi, Elise!</h2>
+            <a href="{{ url_for('create_post') }}" class="add-post-btn">+</a>
+        </div>
+
+        <div class="posts">
+            {% for post in posts %}
+            <div class="post-card">
+                <a href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </body>
 </html>
