@@ -71,7 +71,7 @@ input[type="text"], textarea, input[type="file"] {
 }
 
 #recordButton:hover {
-    background-color: #FFCBA5;
+    background-color: #5BC8B2;
 }
 
 
@@ -88,7 +88,7 @@ input[type="text"], textarea, input[type="file"] {
 }
 
 .submit-btn:hover {
-    background-color: #FF9899;
+    background-color: #5BC8B2;
 }
 
 
@@ -108,7 +108,7 @@ input[type="text"], textarea, input[type="file"] {
 }
 
 #customFileButton:hover {
-    background-color: #0056b3;
+    background-color: #5BC8B2;
 }
 
 /* New class to align file name properly */

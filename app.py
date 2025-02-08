@@ -48,33 +48,32 @@ def create_post():
     if request.method == 'POST':
         title = request.form['title']
         content = request.form['content']
-        
-        # Get the uploaded file
+
+        # Process uploaded file
         audio_file = request.files.get('audio')
         audio_path = None
 
         if audio_file and audio_file.filename:
-            # Save uploaded file
             audio_path = save_audio_file(audio_file)
-        
-        # Handle recorded audio (if it's present as Base64 string)
+
+        # Handle recorded audio if it's present as Base64 string
         recorded_audio = request.form.get('recorded_audio')
         if recorded_audio:
-            # Decode the Base64 string and save the file
-            filename = f"recording_{int(time.time())}.wav"
+            timestamp = str(int(time.time()))  # Use timestamp for file name
+            filename = f"Recording_{timestamp}.wav"
             audio_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            
-            # Decode and save the Base64 file
             with open(audio_path, "wb") as f:
                 f.write(base64.b64decode(recorded_audio.split(",")[1]))
 
-        # Add new post to the list
+        # Add post with audio path
         new_post = {"id": len(posts) + 1, "title": title, "content": content, "audio": audio_path}
         posts.append(new_post)
 
         return redirect(url_for('home'))
 
     return render_template('create_post.html')
+
+
 
 
 @app.route('/post/<int:post_id>', methods=['GET', 'POST'])

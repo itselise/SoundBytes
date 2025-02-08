@@ -7,16 +7,19 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>{{ post.title }}</h1>
+    <h2>{{ post.title }}</h2>
     <p>{{ post.content }}</p>
 
+    <!-- Display the audio player -->
     {% if post.audio %}
-        <h2>Audio:</h2>
+        <p>Audio:</p>
         <audio controls>
-            <source src="{{ url_for('static', filename=post.audio.split('static/')[-1]) }}" type="audio/mpeg">
+            <source src="{{ url_for('static', filename=post.audio) }}" type="audio/wav">
             Your browser does not support the audio element.
         </audio>
     {% endif %}
+
+
 
 
     <h2>Comments</h2>
