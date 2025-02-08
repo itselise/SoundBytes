@@ -7,7 +7,6 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-
 # Sample data for posts and comments
 posts = [
     {"id": 1, "title": "First Post", "audio": "static/uploads/sample1.mp3"},
