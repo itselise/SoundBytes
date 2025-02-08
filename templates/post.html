@@ -4,52 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ post.title }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='../static/post.css') }}">
 </head>
 <body>
-    <h2>{{ post.title }}</h2>
-    <p>{{ post.content }}</p>
+    <div class="container">
+        <h2>{{ post.title }} 🎶</h2>
+        <p class="post-content">{{ post.content }}</p>
 
-    <!-- Display the audio player -->
-    {% if post.audio %}
-        <p>Audio:</p>
-        <audio controls>
-            <source src="{{ url_for('static', filename=post.audio) }}" type="audio/wav">
-            Your browser does not support the audio element.
-        </audio>
-    {% endif %}
+        <!-- Display the audio player -->
+        {% if post.audio %}
+            <p>🎧 Audio:</p>
+            <audio controls>
+                <source src="{{ url_for('static', filename=post.audio) }}" type="audio/wav">
+                Your browser does not support the audio element.
+            </audio>
+        {% endif %}
 
+        <h2>💬 Comments</h2>
+        <ul class="comment-list">
+            {% for comment in comments %}
+            <li class="comment-item">
+                <strong>{{ comment.author }}:</strong>
+                {% if comment.audio %}
+                    <audio controls>
+                        <source src="{{ url_for('static', filename=comment.audio.split('static/')[-1]) }}" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
 
-    <h2>Comments</h2>
-    <ul>
-        {% for comment in comments %}
-        <li>
-            <strong>{{ comment.author }}:</strong>
-            {% if comment.audio %}
-                <audio controls>
-                    <source src="{{ url_for('static', filename=comment.audio.split('static/')[-1]) }}" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
-            {% endif %}
-        </li>
-        {% endfor %}
-    </ul>
+        <h3>✨ Add a Comment</h3>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="input-group">
+                <label for="author">Your Name 🌸:</label>
+                <input type="text" name="author" id="author" required placeholder="Enter your name">
+            </div>
 
-    <h3>Add a Comment</h3>
-    <form method="POST" enctype="multipart/form-data">
-        <div class="input-group">
-            <label for="author">Your Name:</label>
-            <input type="text" name="author" id="author" required>
-        </div>
+            <div class="input-group">
+                <label for="audio">Upload Audio 🎤:</label>
+                <input type="file" name="audio" id="audio" accept="audio/*">
+            </div>
 
-        <div class="input-group">
-            <label for="audio">Upload Audio:</label>
-            <input type="file" name="audio" id="audio" accept="audio/*">
-        </div>
+            <button type="submit" class="submit-button">Submit Comment 💌</button>
+        </form>
 
-        <button type="submit">Submit Comment</button>
-    </form>
-
-    <a href="{{ url_for('home') }}">Back to Home</a>
+        <a href="{{ url_for('home') }}" class="back-link">Back to Home 🏡</a>
+    </div>
 </body>
 </html>
