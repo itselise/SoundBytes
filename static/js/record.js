@@ -97,6 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         // Store Base64 data to be sent to the server
                         document.getElementById("recordedAudioInput").value = reader.result;
                     };
+                    
 
                     // Show audio preview
                     const audioURL = URL.createObjectURL(audioBlob);

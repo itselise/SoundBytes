@@ -26,18 +26,12 @@ def allowed_file(filename):
 
 def save_audio_file(audio_file):
     filename = secure_filename(audio_file.filename)
-    timestamp = str(int(time.time()))
+    timestamp = str(int(time.time()))  # Use timestamp for uniqueness
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], f"{timestamp}_{filename}")
-    
     audio_file.save(filepath)
-    
-    # Debugging: Check if the file was saved successfully
-    if os.path.getsize(filepath) > 0:
-        print(f"Audio file {filename} saved successfully!")
-    else:
-        print(f"Audio file {filename} is empty or not saved correctly!")
+    print(f"Audio file saved at: {filepath}")  # Debugging line
+    return f"uploads/{timestamp}_{filename}"  # Make sure to return the relative path
 
-    return filepath
 
 @app.route('/')
 def home():
@@ -54,8 +48,8 @@ def create_post():
         audio_path = None
 
         if audio_file and audio_file.filename:
-            audio_path = save_audio_file(audio_file)
-
+            audio_path = save_audio_file(audio_file)  # Save uploaded file
+        
         # Handle recorded audio if it's present as Base64 string
         recorded_audio = request.form.get('recorded_audio')
         if recorded_audio:
@@ -72,6 +66,7 @@ def create_post():
         return redirect(url_for('home'))
 
     return render_template('create_post.html')
+
 
 
 
