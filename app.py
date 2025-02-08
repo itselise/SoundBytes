@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 import os
+import time
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
@@ -15,6 +17,13 @@ comments = {
     1: [{"author": "Alice", "audio": "static/uploads/comment1.mp3"}],
     2: [{"author": "Charlie", "audio": "static/uploads/comment2.mp3"}],
 }
+
+def save_audio_file(audio_file):
+    filename = secure_filename(audio_file.filename)
+    timestamp = str(int(time.time()))
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], f"{timestamp}_{filename}")
+    audio_file.save(filepath)
+    return filepath
 
 @app.route('/')
 def home():
@@ -32,8 +41,7 @@ def create_post():
         title = request.form['title']
         audio_file = request.files['audio']
         if audio_file:
-            audio_path = os.path.join(app.config['UPLOAD_FOLDER'], audio_file.filename)
-            audio_file.save(audio_path)
+            audio_path = save_audio_file(audio_file)
             new_post = {"id": len(posts) + 1, "title": title, "audio": audio_path}
             posts.append(new_post)
             return redirect(url_for('home'))
@@ -44,8 +52,7 @@ def add_comment(post_id):
     author = request.form['author']
     audio_file = request.files['audio']
     if audio_file:
-        audio_path = os.path.join(app.config['UPLOAD_FOLDER'], audio_file.filename)
-        audio_file.save(audio_path)
+        audio_path = save_audio_file(audio_file)
         comments.setdefault(post_id, []).append({"author": author, "audio": audio_path})
     return redirect(url_for('post', post_id=post_id))
 
