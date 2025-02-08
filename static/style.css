@@ -1,7 +1,9 @@
 /* General Page Styling */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
+    background-image: url('../static/icons/bg.jpg'); /* Update with the correct path to your image */
+    background-size: cover; /* Makes sure the image covers the entire screen */
+    background-position: center; /* Centers the background image */
     display: flex;
     justify-content: center;
     align-items: center;
