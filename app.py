@@ -5,18 +5,20 @@ from werkzeug.utils import secure_filename
 import base64
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = 'static/uploads'
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
+# Dummy users dictionary (replace with database in a real app)
+users = {
+    "elise": "BobDylan"  # Hardcoded user credentials
+}
 # Sample data for posts and comments
 posts = [
-    {"id": 1, "title": "First Post", "audio": "static/uploads/sample1.mp3"},
-    {"id": 2, "title": "Second Post", "audio": "static/uploads/sample2.mp3"},
+    {"id": 1, "title": "stallion!", "audio": "../static/audio/sample1.mp3"},
+    {"id": 2, "title": "from my poem", "audio": "../static/audio/sample2.mp3"},
 ]
 
 comments = {
-    1: [{"author": "Alice", "audio": "static/uploads/comment1.mp3"}],
-    2: [{"author": "Charlie", "audio": "static/uploads/comment2.mp3"}],
+    1: [{"author": "Alice", "audio": "../static/audio/comment1.mp3"}],
+    2: [{"author": "Charlie", "audio": "../static/audio/comment2.mp3"}],
 }
 
 ALLOWED_EXTENSIONS = {'mp3', 'wav', 'ogg'}
@@ -27,15 +29,54 @@ def allowed_file(filename):
 def save_audio_file(audio_file):
     filename = secure_filename(audio_file.filename)
     timestamp = str(int(time.time()))  # Use timestamp for uniqueness
-    filepath = os.path.join(app.config['UPLOAD_FOLDER'], f"{timestamp}_{filename}")
+    filepath = os.path.join(app.static_folder, 'audio', f"{timestamp}_{filename}")
+    os.makedirs(os.path.dirname(filepath), exist_ok=True)
     audio_file.save(filepath)
     print(f"Audio file saved at: {filepath}")  # Debugging line
-    return f"uploads/{timestamp}_{filename}"  # Make sure to return the relative path
+    return f"audio/{timestamp}_{filename}"  # This ensures the path is accessible through the static folder
 
 
+# Home route - shows the posts
 @app.route('/')
+def login():
+    return render_template('login.html')
+
+# Login form submission handler
+@app.route('/submit_login', methods=['POST'])
+def submit_login():
+    username = request.form['username']
+    password = request.form['password']
+
+    # Check if the credentials match
+    if users.get(username) == password:
+        return redirect(url_for('home'))  # Redirect to home page after successful login
+    
+    # If login fails, show an error message
+    error_message = "Invalid username or password"
+    return render_template('login.html', error_message=error_message)
+
+# Home page route after login
+@app.route('/home')
 def home():
     return render_template('home.html', posts=posts)
+
+# Sign up route for new users
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        # Save the new user credentials (you should ideally store this in a database)
+        if username not in users:  # Check if username already exists
+            users[username] = password
+            return redirect(url_for('login'))  # Redirect to login after sign-up
+        else:
+            error_message = "Username already exists"
+            return render_template('signup.html', error_message=error_message)
+    
+    return render_template('signup.html')  # Render the sign-up page on GET request
+
 
 @app.route('/create', methods=['GET', 'POST'])
 def create_post():
@@ -87,6 +128,7 @@ def post(post_id):
         return redirect(url_for('post', post_id=post_id))
 
     return render_template('post.html', post=post, comments=post_comments)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
