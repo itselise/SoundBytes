@@ -19,13 +19,6 @@ comments = {
     2: [{"author": "Charlie", "audio": "static/uploads/comment2.mp3"}],
 }
 
-# def save_audio_file(audio_file):
-#     filename = secure_filename(audio_file.filename)
-#     timestamp = str(int(time.time()))
-#     filepath = os.path.join(app.config['UPLOAD_FOLDER'], f"{timestamp}_{filename}")
-#     audio_file.save(filepath)
-#     return filepath
-
 ALLOWED_EXTENSIONS = {'mp3', 'wav', 'ogg'}
 
 def allowed_file(filename):
@@ -46,27 +39,9 @@ def save_audio_file(audio_file):
 
     return filepath
 
-
 @app.route('/')
 def home():
     return render_template('home.html', posts=posts)
-
-@app.route('/post/<int:post_id>', methods=['GET', 'POST'])
-def post(post_id):
-    post = next((p for p in posts if p['id'] == post_id), None)
-    post_comments = comments.get(post_id, [])
-
-    if request.method == 'POST':
-        author = request.form['author']
-        audio_file = request.files.get('audio')
-
-        if audio_file and audio_file.filename:
-            audio_path = save_audio_file(audio_file)
-            comments.setdefault(post_id, []).append({"author": author, "audio": audio_path})
-
-        return redirect(url_for('post', post_id=post_id))
-
-    return render_template('post.html', post=post, comments=post_comments)
 
 @app.route('/create', methods=['GET', 'POST'])
 def create_post():
@@ -76,7 +51,6 @@ def create_post():
         
         # Get the uploaded file
         audio_file = request.files.get('audio')
-        
         audio_path = None
 
         if audio_file and audio_file.filename:
@@ -103,15 +77,22 @@ def create_post():
     return render_template('create_post.html')
 
 
+@app.route('/post/<int:post_id>', methods=['GET', 'POST'])
+def post(post_id):
+    post = next((p for p in posts if p['id'] == post_id), None)
+    post_comments = comments.get(post_id, [])
 
-@app.route('/post/<int:post_id>/comment', methods=['POST'])
-def add_comment(post_id):
-    author = request.form['author']
-    audio_file = request.files['audio']
-    if audio_file:
-        audio_path = save_audio_file(audio_file)
-        comments.setdefault(post_id, []).append({"author": author, "audio": audio_path})
-    return redirect(url_for('post', post_id=post_id))
+    if request.method == 'POST':
+        author = request.form['author']
+        audio_file = request.files.get('audio')
+
+        if audio_file and audio_file.filename:
+            audio_path = save_audio_file(audio_file)
+            comments.setdefault(post_id, []).append({"author": author, "audio": audio_path})
+
+        return redirect(url_for('post', post_id=post_id))
+
+    return render_template('post.html', post=post, comments=post_comments)
 
 if __name__ == '__main__':
     app.run(debug=True)
